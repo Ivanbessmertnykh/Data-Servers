@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: db
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - "./etc/db/init.sql:/docker-entrypoint-initdb.d/init.sql"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ivan_root
+  apache:
+    build: ./etc/httpd
+    volumes:
+      - "./etc/httpd/httpd.conf:/etc/apache2/sites-available/000-default.conf"
+      - "./etc/httpd/app:/var/www/html"
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: site
+      MYSQL_USER: ivan
+      MYSQL_PASSWORD: ivan123321
+  nginx:
+    build: ./etc/nginx
+    container_name: ivan_nginx
+    ports:
+      - 80:80
+    restart: always
+    volumes:
+      - "./etc/nginx/app.conf:/etc/nginx/conf.d/default.conf"
+      - "./etc/nginx/app:/etc/nginx/html"
