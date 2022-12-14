@@ -1,0 +1,25 @@
+CREATE DATABASE IF NOT EXISTS `site`;
+CREATE USER IF NOT EXISTS 'ivan'@'%' IDENTIFIED BY 'ivan123321';
+GRANT ALL ON `site`.* TO 'ivan'@'%';
+FLUSH PRIVILEGES;
+
+USE `site`;
+DROP TABLE IF EXISTS `cars`;
+CREATE TABLE `cars` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `price` int(20) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+LOCK TABLES `cars` WRITE;
+INSERT INTO `cars` VALUES (1,'Audi',7000000);
+UNLOCK TABLES;
+CREATE TABLE `users` (
+  `id` int(20) NOT NULL,
+  `username` text NOT NULL,
+  `password` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ALTER TABLE `users` ADD PRIMARY KEY (`id`);
+ALTER TABLE `users` MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+INSERT INTO `users` (`id`, `username`, `password`) VALUES (1, 'ivan', '$2y$10$cFIsafuVZoBAH0/gqN33ZesW1/mFzTjSVwEUQh.7fRt922MZ9W83u');
+COMMIT;
